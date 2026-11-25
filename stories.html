@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Work Through Hard Problems · Wei Cheng Chao</title>
+  <meta name="description" content="Nine stories from production behind Wei Cheng Chao's resume: what he checked, why he chose each step, and the times he got it wrong.">
+  <meta property="og:title" content="How I Work Through Hard Problems · Wei Cheng Chao">
+  <meta property="og:description" content="The real bugs and fixes behind my resume, including the times I got it wrong.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="assets/wei.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%231f4e79'/><text x='32' y='43' font-family='Georgia,serif' font-size='30' fill='white' text-anchor='middle'>W</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="stories-page">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="./">Wei Cheng Chao</a>
+      <nav aria-label="Sections">
+        <a href="./#work">Work</a>
+        <a href="stories.html" aria-current="page">Stories</a>
+        <a href="./#projects">Projects</a>
+        <a href="./#research">Research</a>
+        <a href="./#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="wrap story-intro" id="top">
+      <p class="eyebrow"><a href="./">← Portfolio</a></p>
+      <h1>How I work through hard problems</h1>
+      <p class="lead">Hi, I’m Wei. In 2026 I was a full stack engineer intern at an ecommerce company, on a platform that watches prices, stock and ads for many brands and runs automated actions when something goes wrong.</p>
+      <p>I worked across the whole stack: the TypeScript and PostgreSQL API, the React and Next.js workflow builder, background workers on AWS, and the tools our LLM agents call over MCP. My resume only has room for the results. These are the stories behind them, including the times I got it wrong.</p>
+    </section>
+
+    <section class="wrap" aria-labelledby="habits-h">
+      <h2 id="habits-h" class="small-h">The habits that keep showing up</h2>
+      <p class="section-lead">Pick a habit to see the stories where it mattered.</p>
+      <div class="habits">
+        <button class="habit" type="button" data-habit="data" aria-pressed="false">
+          <span class="n">01</span>
+          <h3>Look at the data first</h3>
+          <p>Make the system tell me what’s wrong before I change anything.</p>
+        </button>
+        <button class="habit" type="button" data-habit="steps" aria-pressed="false">
+          <span class="n">02</span>
+          <h3>Roll out in small steps</h3>
+          <p>Ship in pieces I can check, so a mistake stays small.</p>
+        </button>
+        <button class="habit" type="button" data-habit="root" aria-pressed="false">
+          <span class="n">03</span>
+          <h3>Fix it where it lives</h3>
+          <p>Even when that’s in another team’s code.</p>
+        </button>
+        <button class="habit" type="button" data-habit="wrong" aria-pressed="false">
+          <span class="n">04</span>
+          <h3>Say when I’m wrong</h3>
+          <p>Own it, clean it up, and change direction.</p>
+        </button>
+      </div>
+    </section>
+
+    <nav class="wrap toc" aria-label="All stories">
+      <ol>
+        <li data-habits="data,wrong"><a href="#failures"><b>35,259 → 0</b><span>Thousands of failures with no explanation</span></a></li>
+        <li data-habits="data,steps"><a href="#table"><b>47 → 8.2 GB</b><span>A 47 GB table that was mostly never read</span></a></li>
+        <li data-habits="data,root"><a href="#tests"><b>54</b><span>A test suite that always passed</span></a></li>
+        <li data-habits="data,root"><a href="#three-bugs"><b>1,664 → 0</b><span>One error message, three different bugs, three teams</span></a></li>
+        <li data-habits="data,root"><a href="#root-cause"><b>~220/day → 0</b><span>Fixing the problem where it actually lives</span></a></li>
+        <li data-habits="steps"><a href="#security"><b>100%</b><span>Locking down customer data without locking out other services</span></a></li>
+        <li data-habits="wrong"><a href="#my-bug"><b>1,738</b><span>When the bug was mine</span></a></li>
+        <li data-habits="wrong,steps"><a href="#design"><b>7 / 7</b><span>Being wrong in a design disagreement</span></a></li>
+        <li data-habits="root,wrong"><a href="#agents"><b>20 → 5 lines</b><span>Feedback that changed how I build for AI agents</span></a></li>
+      </ol>
+    </nav>
+
+    <div class="wrap story-list">
+
+      <article class="story" id="failures" data-habits="data,wrong">
+        <div class="tags"><span class="tag">Debugging</span><span class="tag">Databases</span></div>
+        <h2>Thousands of failures with no explanation</h2>
+        <div class="story-metric"><b>35,259 → 0</b><span>failed actions traced to one bug, zero since the fix</span></div>
+        <p>Every day thousands of automated actions on our platform were failing. Each failure was saved with an empty status and the same message from the database driver, “Failed query.” That message doesn’t tell you which query or which constraint, so when people talked about these failures they were mostly guessing.</p>
+        <p>I didn’t want to guess, so my first pull request didn’t try to fix anything. It only walked the error’s cause chain and saved the real PostgreSQL error code and the constraint name in their own columns. I wanted the failures to tell us what they were before we changed anything.</p>
+        <p>Before I merged it, I read my own PR again line by line against the ticket, and I found a mistake I made. I was logging the raw error one line before cleaning it, so customer ids and action settings would have gone into our logs. I fixed it in both places the error was logged and added tests. Then I reverted the fix on purpose to make sure the tests really failed without it, because I wanted to know they were actually checking something.</p>
+        <p>Once the real errors were being saved, it only took a few days to see the answer. About 85% of the failures were error code 23505, a unique key violation, and the key didn’t include the organization. So when two brands had the same asset, the first organization’s action went through and every other organization’s action for that asset failed.</p>
+        <p>I added the organization to the key and fixed how the job was queued. After that went live, this failure went to zero, and it has stayed at zero across more than 120,000 actions since.</p>
+        <p class="lesson">Now when an error doesn’t say what’s wrong, I first make it record the real cause, and then the fix is usually small.</p>
+        <p class="back"><a href="#top">Back to all stories ↑</a></p>
+      </article>
+
+      <article class="story" id="table" data-habits="data,steps">
+        <div class="tags"><span class="tag">Databases</span><span class="tag">Performance</span></div>
+        <h2>A 47 GB table that was mostly never read</h2>
+        <div class="story-metric"><b>47 → 8.2 GB</b><span>live table 83% smaller; a normal query reads one small partition</span></div>
+        <p>One of our biggest production tables saved the result of every automated check, for every product, on every run. It had almost 40 million rows, it was 47 GB, and it was still growing every day.</p>
+        <p>The ticket asked if we should move this table into another team’s data store. Before answering, I went through the code and mapped every place that read or wrote it. The move didn’t really fit. The writes happen in the same database transaction as another table, and some reads add up hundreds of thousands of JSON rows, which that store wasn’t built for. While I was mapping it, I also noticed that 93% of the rows were results where nothing triggered, and nothing in the code ever read them.</p>
+        <p>So I changed the plan. I stopped writing the rows nobody read, and I hash-partitioned the table into 16 partitions by check id, so a normal query only looks at one partition, which is 1.5 GB at most.</p>
+        <p>The live cutover was the hardest part, and my first try failed. Copying 39 million rows took longer than the 300 second limit on the Lambda that runs our database migrations. When I looked at what we really needed to keep, only the triggered rows were ever read, which was about 3% of the table. So I copied only those, and the migration finished easily.</p>
+        <p>On the second try, a check I built into the migration caught a problem. It compared the new table’s columns with production and found five columns created as varchar(255), where production had unbounded varchar. It stopped the swap and rolled everything back cleanly. If it hadn’t, longer values would have started failing to save. I fixed the types, finished the cutover with the workers paused, and kept the old table as a rollback copy.</p>
+        <p>While I was working in that area I also found why some jobs got stuck after workers scaled down. EXPLAIN showed that an OR in the claim query forced a full sequential scan and sort, with a plan cost around 217,000, compared to about 19 when it used the right partial index. I split it into two simple queries so each one can use its index.</p>
+        <p class="back"><a href="#top">Back to all stories ↑</a></p>
+      </article>
+
+      <article class="story" id="tests" data-habits="data,root">
+        <div class="tags"><span class="tag">CI/CD</span><span class="tag">Reliability</span></div>
+        <h2>A test suite that always passed</h2>
+        <div class="story-metric"><b>54</b><span>releases found that had skipped the test gate; 3 broken routes caught</span></div>
+        <p>We had an API test suite that was supposed to stop bad releases before they reached production. It always showed green. Nobody asked me to look at it, but one thing didn’t make sense to me.</p>
+        <p>A real run of that suite takes about 85 seconds, and the passing runs were taking 2 to 5 seconds. A run that short couldn’t really be calling our API, so I opened the workflow and traced it. A condition in a reusable CI workflow was making the suite skip, and a skipped job still shows as a pass. It had happened 54 times, so every release in that time went out without the test gate we all thought we had.</p>
+        <p>I fixed the call path, but the suite still stayed off, because there was also a switch that nobody had turned back on. My change to remove that switch is still in review.</p>
+        <p>A few weeks before that, I had already added a separate check. After every successful production deploy, our authorization test matrix runs against production itself. One morning in October it went red. Three production routes were returning 500 errors, and these were pages people use every day.</p>
+        <p>I traced it to a database migration that got skipped. Our pipeline picked which migrations to run by comparing against the previous commit. A few runs before had been cancelled, so the commit that added the migration was never deployed, and the new code was asking for a column that didn’t exist yet. The missing migration was applied the same day and the routes came back. The next day I changed the pipeline to compare against the last successful run instead, so a cancelled run can’t skip a migration again.</p>
+        <p class="lesson">Since then, when a check is always green, I take the time to make sure it’s really running.</p>
+        <p class="back"><a href="#top">Back to all stories ↑</a></p>
+      </article>
+
+      <article class="story" id="three-bugs" data-habits="data,root">
+        <div class="tags"><span class="tag">Debugging</span><span class="tag">Cross-team</span></div>
+        <h2>One error message, three different bugs, three teams</h2>
+        <div class="story-metric"><b>1,664 → 0</b><span>“service unavailable” errors, plus two fixes in other teams’ code</span></div>
+        <p>Our hourly end-to-end tests kept failing on the automation pages, and people using the product were getting “service unavailable” errors. At first it looked like one flaky problem. I wasn’t sure about that, so before fixing anything I split the failures by cause. It turned out to be three different bugs, in code owned by three different teams.</p>
+        <p>The first one was the biggest. The gateway access log didn’t record the path for these errors, so I couldn’t group them by route. It did record the response size, though. When I grouped the 503s by size, all 1,664 of them were the same 113-byte body, which came from an organization lookup at sign-in that was failing. Once I knew that, I changed our API to wait up to 5 seconds for the lookup, inside the gateway’s own time limit, and return a clear error if it still failed. Those errors went to zero and have stayed there.</p>
+        <p>The second one was a storefront page that hung on about 4% of its requests on the day I measured it. My first guess was that only our test account was hitting it, but the production logs showed normal browsers hitting it too. So I treated it as a real customer bug and added timeouts to the server-side data fetches that didn’t have any.</p>
+        <p>The third one was a request list in another team’s service that timed out after 30 seconds. The suggested fix was a row limit and a new index. I tested that first, and it didn’t help, because the real cost was a join that made the database scan the index for every request type. So I changed the query to look up the ids first and filter on them directly. On test data, the database pages it read went from about 408,000 to about 4,500.</p>
+        <p class="back"><a href="#top">Back to all stories ↑</a></p>
+      </article>
+
+      <article class="story" id="root-cause" data-habits="data,root">
+        <div class="tags"><span class="tag">Cross-team</span><span class="tag">Root cause</span></div>
+        <h2>Fixing the problem where it actually lives</h2>
+        <div class="story-metric"><b>~220/day → 0</b><span>rejected actions, zero every day since</span></div>
+        <p>Some of our price and listing actions were getting rejected by a shared task service that another team owns. It changed day to day, from 41 to 813 rejections, and these were changes brands were counting on.</p>
+        <p>I pulled the rejected requests from production and compared them with what the service accepts. It turned out we were sending a name in lowercase, and the service only allowed the capitalized version.</p>
+        <p>I could have added a workaround on our side, but then the next team to call that service would hit the same problem. So I asked for access to their codebase and fixed the validation there. Rejections went to zero the next day, and they have stayed at zero.</p>
+        <p>A few weeks earlier I had a similar moment with my own work. I was about to ship a unique index to stop duplicate actions. Before merging, I counted how many rows in production already broke that rule, and there were 2,267 duplicate keys. A plain unique index would have failed to build and taken the whole deploy down with it. CI was fully green, but only because the test database had no history. So I scoped the index to new rows only.</p>
+        <p class="back"><a href="#top">Back to all stories ↑</a></p>
+      </article>
+
+      <article class="story" id="security" data-habits="steps">
+        <div class="tags"><span class="tag">Security</span><span class="tag">Multi-tenant</span></div>
+        <h2>Locking down customer data without locking out other services</h2>
+        <div class="story-metric"><b>100%</b><span>of tenant isolation gaps from a security review closed and enforced</span></div>
+        <p>Our platform serves many brands, and each brand should only see its own data. A security review found some API routes that checked who you were, but not whether you belonged to the organization you were asking about.</p>
+        <p>The fast option was one flag that turned on strict checks everywhere. But other internal services also called our API with their own credentials, like our agent platform, cache warmers, and some real cross-organization reads. If we blocked them by accident, that would be an outage too. So I was as worried about blocking a real caller as I was about leaving a gap open, and I closed the gaps one group of routes at a time.</p>
+        <p>Doing it in steps helped, because when I turned the checks on in staging, it broke 5 wildcard routes for service-to-service callers. I fixed just those routes the same day instead of rolling everything back, so the problem never reached production.</p>
+        <p>I turned it on in production after it ran 48 hours in staging, and then I watched the 401, 403 and 5xx errors. When they stayed flat, I deleted the kill switch and the fail-open code behind it, code first and then infrastructure, so nobody could quietly turn the protection off later. Later I also deleted some unused routes that skipped these checks, instead of patching them.</p>
+        <p class="back"><a href="#top">Back to all stories ↑</a></p>
+      </article>
+
+      <article class="story" id="my-bug" data-habits="wrong">
+        <div class="tags"><span class="tag">Ownership</span><span class="tag">Queues</span></div>
+        <h2>When the bug was mine</h2>
+        <div class="story-metric"><b>1,738</b><span>duplicate jobs my change caused, cleaned up</span></div>
+        <p>In August I shipped a change that made some batch actions create one job per organization. For actions that weren’t limited to one organization, each of those jobs still sent the whole batch. On a normal day it was only extra work, so nobody noticed it, including me.</p>
+        <p>In October an upstream data pipeline was down for about three days. When it came back, one batch turned on about 229,000 results at once. My change turned that into 55 to 113 copies per run, and each copy took about an hour, so real actions for brands got stuck in line behind them.</p>
+        <p>When I traced the backlog, it went back to my change, so it was my job to clean it up. I wrote the query to cancel the extra jobs, a teammate with production write access ran it, and it cancelled 1,738 duplicates. Afterward I checked that every group still had exactly one completed job. I wrote a fix too, but a teammate’s broader change, which scoped batch jobs to one organization, landed first and covered the same case, so I closed mine.</p>
+        <p class="lesson">Looking back, I only tested my change on a normal day. I never asked what would happen if 200,000 results showed up at once. Now when I change how work gets queued, I look at the worst case in production data before I ship it.</p>
+        <p class="back"><a href="#top">Back to all stories ↑</a></p>
+      </article>
+
+      <article class="story" id="design" data-habits="wrong,steps">
+        <div class="tags"><span class="tag">Teamwork</span><span class="tag">System design</span></div>
+        <h2>Being wrong in a design disagreement</h2>
+        <div class="story-metric"><b>7 / 7</b><span>review comments fixed after switching to a teammate’s design</span></div>
+        <p>An ads team in Australia wanted Slack alerts when their campaigns had problems, in time for Black Friday. I designed it as a new action type in our platform that posts straight to Slack, and I opened the pull requests.</p>
+        <p>A senior engineer on my team disagreed. He said the team had decided our platform shouldn’t call outside services directly anymore, and everything should go through the shared task service so there is one audit trail.</p>
+        <p>At first I pushed back and wrote up why I thought posting directly was fine. But when I checked my own points against the code, two of them were wrong. I had written that our platform would only hear “accepted” back from the task service, but it actually gets status updates. I had also said it would need one request per item, but batched requests already existed. So I corrected both in the ticket and told him, instead of just moving on.</p>
+        <p>Then I tried a middle option. We would keep the direct post, but write an audit record to the task service first, the same way another action already did it. I built it so we could talk about real code, and I asked our lead to make the call. My teammate still thought Slack should be a provider inside the task service.</p>
+        <p>He was right about where the team was going, and the extra work wasn’t much. So I went with his design fully. I added a Slack provider to the task service, which was a codebase I had never worked in, and changed our action to go through it. The review came back with seven comments, and I fixed all seven. It’s still in review.</p>
+        <p class="lesson">I learned to check my own facts as carefully as I check other people’s. And building the option in real code made the conversation much easier.</p>
+        <p class="back"><a href="#top">Back to all stories ↑</a></p>
+      </article>
+
+      <article class="story" id="agents" data-habits="root,wrong">
+        <div class="tags"><span class="tag">AI agents</span><span class="tag">MCP</span></div>
+        <h2>Feedback that changed how I build for AI agents</h2>
+        <div class="story-metric"><b>20 → 5 lines</b><span>tool description, then the same lesson applied before anyone asked</span></div>
+        <p>I was adding a tool that our LLM agents call to preview what happens when someone edits an automated check. The API returned two kinds of errors that looked almost the same, so I wrote a long tool description, about 20 lines, explaining how the agent could tell them apart by matching the error text.</p>
+        <p>A senior engineer who reviews tools for our agent platform said it was unnecessary context bloat. He said that ideally the API should return an error that makes enough sense that the agent knows what to do.</p>
+        <p>My first reaction was that I was just being thorough. But after thinking about it, I agreed with him. The tool description goes into the agent’s context on every call, so I was paying for a backend problem again and again instead of fixing it once.</p>
+        <p>I cut the description to about 5 lines, like the other tools in that file, and treated clearer API errors as a separate follow-up. Then I checked the agent that uses this tool, before anyone asked, and found the same kind of repeated example block in its system prompt. That one costs even more, because it’s paid on every run. I trimmed it too, and kept only the two error strings that really drive retry behavior.</p>
+        <p class="lesson">Now when I write anything an agent will read, I try to keep it short, and I ask myself if I’m covering up a problem that should be fixed somewhere else.</p>
+        <p class="back"><a href="#top">Back to all stories ↑</a></p>
+      </article>
+    </div>
+
+    <section class="wrap section contact">
+      <h2>How I like to work</h2>
+      <p>I like to look at the data before I fix anything, roll things out in small steps I can check, and fix the problem where it really is, even if that’s in another team’s code. And when I’m wrong, I try to say so and change direction.</p>
+      <p>I do my best work on teams that care about production and give direct, honest reviews. Next, I want to keep growing in system design at a larger scale, data modeling for very large tables, and building LLM agents that work reliably. If that sounds like your team, I would love to talk.</p>
+      <div class="cta">
+        <a class="btn primary" href="mailto:weicheng9722@gmail.com">Email me</a>
+        <a class="btn" href="https://linkedin.com/in/wei-cheng-chao" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="./">Back to portfolio</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap footer">Thank you for reading. © 2026 Wei Cheng Chao</footer>
+
+  <script>
+    (function () {
+      var btns = document.querySelectorAll('.habit');
+      var items = document.querySelectorAll('.toc li, .story');
+      btns.forEach(function (b) {
+        b.addEventListener('click', function () {
+          var on = b.getAttribute('aria-pressed') !== 'true';
+          btns.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+          if (on) b.setAttribute('aria-pressed', 'true');
+          var h = on ? b.dataset.habit : null;
+          items.forEach(function (el) {
+            el.hidden = !!h && el.dataset.habits.split(',').indexOf(h) === -1;
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
