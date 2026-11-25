@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wei Cheng Chao · Full Stack Engineer</title>
+  <meta name="description" content="Wei Cheng Chao, full stack engineer and M.S. Computer Science student at BYU (April 2027). Production work in TypeScript, PostgreSQL, React and LLM agent tools.">
+  <meta property="og:title" content="Wei Cheng Chao · Full Stack Engineer">
+  <meta property="og:description" content="Production bugs, big tables and LLM agents. The real work behind my resume.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/wei.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%231f4e79'/><text x='32' y='43' font-family='Georgia,serif' font-size='30' fill='white' text-anchor='middle'>W</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">Wei Cheng Chao</a>
+      <nav aria-label="Sections">
+        <a href="#work">Work</a>
+        <a href="#stories">Stories</a>
+        <a href="#projects">Projects</a>
+        <a href="#research">Research</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap" id="top">
+      <div class="hero-text">
+        <p class="eyebrow">Full Stack Engineer · M.S. CS at BYU, April 2027</p>
+        <h1>Hi, I'm Wei.</h1>
+        <p class="lead">I like finding the real cause of a problem, then fixing it carefully so the people who depend on the system aren't hurt. In 2026 I merged <strong>215 pull requests across 6 codebases</strong> at Pattern, working on a TypeScript and PostgreSQL API, a React and Next.js workflow builder, and tools our LLM agents call over MCP.</p>
+        <p class="meta">Based in Provo, UT · Open to relocation · Looking for full-time new grad roles starting mid-2027</p>
+        <div class="cta">
+          <a class="btn primary" href="mailto:weicheng9722@gmail.com">Email me</a>
+          <a class="btn" href="https://linkedin.com/in/wei-cheng-chao" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="https://github.com/CHAOLIN99" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+      <img class="portrait" src="assets/wei.jpg" alt="Portrait of Wei Cheng Chao smiling, in a white shirt and red tie" width="1200" height="800">
+    </section>
+
+    <section class="numbers wrap" aria-label="Results at a glance">
+      <div><b>35,259 → 0</b><span>failed actions traced to one bug</span></div>
+      <div><b>47 GB → 8.2 GB</b><span>live production table, 83% smaller</span></div>
+      <div><b>1,664 → 0</b><span>sign-in 503 errors</span></div>
+      <div><b>54</b><span>releases found skipping the test gate</span></div>
+    </section>
+
+    <section id="work" class="wrap section">
+      <h2>Experience</h2>
+
+      <article class="job">
+        <div class="job-head">
+          <h3>Full Stack Engineer Intern · Pattern</h3>
+          <span class="when">May – Dec 2026 · Lehi, UT</span>
+        </div>
+        <ul>
+          <li>Shipped full-stack features across a TypeScript/PostgreSQL API, a React/Next.js workflow builder, and LLM agent tools over MCP: 215 merged PRs across 6 codebases in 6 months.</li>
+          <li>Traced 35,259 failed actions to one root cause by first shipping a PR that only recorded each SQL error code and constraint, then fixed the unique key behind them. The failure went to 0 and stayed there across 120,000+ actions.</li>
+          <li>Cut a production PostgreSQL table 83% (47 GB → 8.2 GB) by mapping every read and write (93% of rows were never read), hash-partitioning into 16 partitions, and doing a live cutover behind a schema-drift guard.</li>
+          <li>Rolled out multi-tenant org-scope enforcement one route family at a time, fixed a staging break on 5 service-to-service routes the same day, and removed the kill switch only after prod errors stayed flat.</li>
+          <li>Drove two cross-team production errors to zero: ~1,664 sign-in 503s, found by grouping gateway logs by response size, and ~220 rejected actions a day, fixed at the source in another team's service.</li>
+          <li>Found a deploy gate that had silently skipped 54 times (2–5 s runs vs ~85 s), and added a post-deploy prod check that caught 3 broken routes from a skipped migration.</li>
+        </ul>
+        <p class="tags">TypeScript · PostgreSQL · React · Next.js · AWS · MCP · Datadog · CI/CD</p>
+      </article>
+
+      <article class="job">
+        <div class="job-head">
+          <h3>Graduate Researcher · BYU Social Technology &amp; Privacy Lab</h3>
+          <span class="when">Sep 2025 – Apr 2026 · Provo, UT</span>
+        </div>
+        <ul>
+          <li>Led cross-cultural LLM research across GPT models, using power distance and uncertainty avoidance as cultural dimensions. Prompt-engineering strategies raised cultural-appropriateness scores 25%.</li>
+          <li>Ran controlled experiments on prompt phrasing, model version and framing, found prompt-template bias was the main cause of inconsistent results, and rebuilt the evaluation harness.</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <div class="job-head">
+          <h3>Semiconductor Test Engineer · Siliconware Precision Industries (SPIL)</h3>
+          <span class="when">May – Sep 2025 · Taichung, Taiwan</span>
+        </div>
+        <ul>
+          <li>Diagnosed wafer-test failures through handler wiring, pneumatic lines and probe alignment, and recalibrated probe needles that caused false non-contact signals.</li>
+          <li>Analyzed performance data across 429 equipment systems to improve maintenance for 24/7 production.</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <div class="job-head">
+          <h3>Undergraduate Research Assistant · BYU &amp; BYU–Hawaii</h3>
+          <span class="when">Jan 2024 – Apr 2025</span>
+        </div>
+        <ul>
+          <li>Probed GPT-2 internals in Python to find transformer neurons that directly shape outputs, moving evaluation from impact scores to BLEU.</li>
+          <li>Built a gesture-recognizing robotic hand on Jetson TX2 with 3D-printed parts and servos, a PyTorch model and a C++ gesture database.</li>
+          <li>Built Swift and Kotlin mobile health-sensing apps, and helped update a survey of radial visualization methods.</li>
+          <li>Teaching assistant for Python, Java, C++ and discrete math (50+ students), and founding president of the BYU–Hawaii Computer Science Club.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="stories" class="wrap section">
+      <h2>Stories from production</h2>
+      <p class="section-lead">My resume only has room for results. These are the stories behind them: what I checked, why I chose each step, and the times I got it wrong.</p>
+      <div class="cards">
+        <a class="card" href="https://ssc2026.me" target="_blank" rel="noopener">
+          <h3>Thousands of failures with no explanation</h3>
+          <p>Every failure said only "Failed query." My first PR fixed nothing. It made the errors record their real cause, and the fix after that was small.</p>
+        </a>
+        <a class="card" href="https://ssc2026.me" target="_blank" rel="noopener">
+          <h3>A 47 GB table that was mostly never read</h3>
+          <p>The first cutover hit a 300-second Lambda limit. The second was stopped by my own schema check, which caught five wrong column types before they reached prod.</p>
+        </a>
+        <a class="card" href="https://ssc2026.me" target="_blank" rel="noopener">
+          <h3>A test suite that always passed</h3>
+          <p>Real runs take 85 seconds. The passing ones took 2 to 5. A skipped job still shows green, and it had happened 54 times.</p>
+        </a>
+        <a class="card" href="https://ssc2026.me" target="_blank" rel="noopener">
+          <h3>When the bug was mine</h3>
+          <p>A change I shipped turned one big batch into up to 113 copies per run. I traced it, cleaned up 1,738 duplicate jobs, and now test for bursts.</p>
+        </a>
+        <a class="card" href="https://ssc2026.me" target="_blank" rel="noopener">
+          <h3>Being wrong in a design disagreement</h3>
+          <p>I pushed back on a teammate, then found two of my own points were wrong. I said so, and rebuilt the feature his way in a codebase I'd never touched.</p>
+        </a>
+        <a class="card" href="https://ssc2026.me" target="_blank" rel="noopener">
+          <h3>Feedback that changed how I build for AI agents</h3>
+          <p>A reviewer called my 20-line tool description context bloat. He was right. I cut it to 5, then trimmed the agent's system prompt too.</p>
+        </a>
+      </div>
+      <p><a class="more" href="https://ssc2026.me" target="_blank" rel="noopener">Read all the stories →</a></p>
+    </section>
+
+    <section id="projects" class="wrap section">
+      <h2>Projects</h2>
+      <div class="cards">
+        <a class="card" href="https://github.com/CHAOLIN99/stock-test-2" target="_blank" rel="noopener">
+          <h3>Stock Prediction Dashboard</h3>
+          <p>Next-day price prediction for five tech stocks, comparing classical, time-series and deep-learning models, with an offline dashboard.</p>
+          <p class="tags">Python · Time series · Deep learning</p>
+        </a>
+        <a class="card" href="https://github.com/CHAOLIN99/cross_cultural_communication_senario_evaluation" target="_blank" rel="noopener">
+          <h3>Cross-Cultural Communication Evaluation</h3>
+          <p>A neural probe on GPT-2 embeddings that detects cross-cultural norm violations, reaching F1 0.85.</p>
+          <p class="tags">Python · PyTorch · GPT-2</p>
+        </a>
+        <a class="card" href="https://github.com/CHAOLIN99/face_reco" target="_blank" rel="noopener">
+          <h3>Face Studio</h3>
+          <p>Local face counting and recognition with a Flask web UI and command-line tools.</p>
+          <p class="tags">Python · Flask · Computer vision</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="research" class="wrap section two-col">
+      <div>
+        <h2>Research &amp; publication</h2>
+        <p>C. Slade, Y. Sun, <b>W.-C. Chao</b>, C.-C. Chen, R. Benzo, and P. Washington. “Current challenges and opportunities in active and passive data collection for mobile health sensing: a scoping review.” <i>JAMIA Open</i>, 8(4), 2025. <a href="https://academic.oup.com/jamiaopen/article/8/4/ooaf025/8206323" target="_blank" rel="noopener">Read the paper</a></p>
+        <p>Oral presentation: competency-based learning in cybersecurity education (BYU Immerse program).</p>
+      </div>
+      <div>
+        <h2>Education</h2>
+        <p><b>M.S. Computer Science</b>, Brigham Young University<br>Sep 2025 – Apr 2027 (expected) · $8,000 scholarship</p>
+        <p><b>B.S. Computer Science</b>, BYU–Hawaii<br>Graduated Apr 2025 · Cum Laude · GPA 3.6</p>
+      </div>
+    </section>
+
+    <section class="wrap section">
+      <h2>Tools I use</h2>
+      <div class="skills">
+        <div><h3>Languages</h3><p>Python, TypeScript/JavaScript, SQL, C++, Java, Swift, Kotlin</p></div>
+        <div><h3>AI &amp; ML</h3><p>LLM agents over MCP, LLM evaluation, prompt engineering, PyTorch, Claude Code, Cursor</p></div>
+        <div><h3>Cloud &amp; infra</h3><p>AWS, Docker, Terraform, PostgreSQL, REST/GraphQL APIs, CI/CD, Datadog, Git</p></div>
+      </div>
+    </section>
+
+    <section id="contact" class="wrap section contact">
+      <h2>Let's talk</h2>
+      <p>I do my best work on teams that care about production and give direct, honest reviews. Next I want to grow in large-scale system design, data modeling for very large tables, and LLM agents that work reliably. If that sounds like your team, I would love to talk.</p>
+      <div class="cta">
+        <a class="btn primary" href="mailto:weicheng9722@gmail.com">weicheng9722@gmail.com</a>
+        <a class="btn" href="https://linkedin.com/in/wei-cheng-chao" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://github.com/CHAOLIN99" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap footer">© 2026 Wei Cheng Chao</footer>
+</body>
+</html>
